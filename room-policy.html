@@ -1,0 +1,318 @@
+<title>C108 Room Policy &amp; Reservation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void:#0a0a0a;
+    --paper:#ffffff;
+    --paper-dim:#f3f3f1;
+    --ink:#111110;
+    --ink-soft:#111110;
+    --hair:#111110;
+    --hair-on-dark:rgba(239,238,230,0.4);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:transparent;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+
+  /* ---------- FULL-PAGE BACKGROUND ---------- */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    background:#000;
+  }
+
+  .bg__img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:52% 40%;
+    filter:grayscale(1) contrast(1.08);
+    opacity:0.9;
+  }
+
+  .bg__scrim{
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 32%, rgba(0,0,0,0.72) 62%, rgba(10,10,10,0.9) 100%);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    flex:0 0 auto;
+    min-height:16px;
+    display:flex;
+    align-items:flex-end;
+  }
+
+  .hero__content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    padding:24px clamp(16px,5vw,40px) 20px;
+  }
+
+  .hero__eyebrow{
+    font-size:0.68rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--paper);
+    opacity:0.75;
+    margin:0 0 6px;
+  }
+
+  .hero__title{
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    color:var(--paper);
+    font-size:clamp(1.3rem,4.4vw,1.9rem);
+    line-height:1.15;
+    letter-spacing:0.01em;
+    margin:0;
+    text-wrap:balance;
+  }
+
+  /* ---------- LINK GRID (nav cells) ---------- */
+  .board{
+    position:relative;
+    flex:0 0 auto;
+    padding:2px clamp(14px,4vw,28px) 4px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .cell{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    background:transparent;
+    border-style:solid;
+    border-color:transparent;
+    border-width:36px 30px 40px 30px;
+    border-image-source:url('bubble.png');
+    border-image-slice:60 47 62 46 fill;
+    border-image-repeat:stretch;
+    border-radius:0;
+    padding:4px 16px 14px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    transition:filter 0.12s ease;
+  }
+
+  .cell:hover,
+  .cell:focus-visible{
+    outline:none;
+    filter:brightness(0.97);
+  }
+
+  .cell:active{
+    filter:brightness(0.93);
+  }
+
+  .cell__text{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    min-width:0;
+  }
+
+  .cell__title{
+    font-weight:700;
+    font-size:1.15rem;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cell__meta{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* ---------- CONTENT PANELS (policy text) ---------- */
+  .doc{
+    position:relative;
+    flex:1 1 auto;
+    padding:6px clamp(14px,4vw,28px) 40px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+
+  .panel + .panel{
+    margin-top:-26px;
+  }
+
+  .panel{
+    position:relative;
+    background:transparent;
+    border-style:solid;
+    border-color:transparent;
+    border-width:36px 30px 40px 30px;
+    border-image-source:url('bubble.png');
+    border-image-slice:60 47 62 46 fill;
+    border-image-repeat:stretch;
+    border-radius:0;
+    padding:4px 12px 10px;
+  }
+
+  .panel__title{
+    font-weight:700;
+    font-size:1.05rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin:0 0 10px;
+  }
+
+  .panel--headline{
+    margin-top:4px;
+  }
+
+  .panel__headline{
+    font-weight:700;
+    font-size:clamp(1.15rem,4vw,1.6rem);
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:1.2;
+    margin:0;
+    text-wrap:balance;
+  }
+
+  .panel__body{
+    font-size:0.95rem;
+    line-height:1.55;
+    color:var(--ink);
+    max-width:64ch;
+  }
+
+  .panel__body p{
+    margin:0 0 12px;
+  }
+
+  .panel__body p:last-child{
+    margin-bottom:0;
+  }
+
+  .panel__body a{
+    color:var(--ink);
+    text-decoration:underline;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cell{ transition:none; }
+  }
+</style>
+
+<div class="bg">
+  <img class="bg__img" src="bg.jpg" alt="">
+  <div class="bg__scrim"></div>
+</div>
+
+<div class="page">
+  <main class="doc">
+    <section class="panel panel--headline">
+      <h1 class="panel__headline">C108 Room Policy &amp; Reservation - 2026-2027</h1>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Contact</h2>
+      <div class="panel__body">
+        <p>Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>)</p>
+        <p>Yanqi He (<a href="mailto:yanqihe@students.calarts.edu">yanqihe@students.calarts.edu</a>)</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Orientation</h2>
+      <div class="panel__body">
+        <p>All students need to attend a studio orientation with Yanqi He (<a href="mailto:yanqihe@students.calarts.edu">yanqihe@students.calarts.edu</a>) or Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>) during their scheduled hours before being able to reserve the studios or check out equipment.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Studio Usage</h2>
+      <div class="panel__body">
+        <p>Students can reserve the Center for Integrated Media Studio (C108) for IM-related projects or events in the Fall Semester outside of C108 class hours.</p>
+        <p>In the spring semester, the IM studio is reserved for classes and individual technical instruction and all second-year IM students for their final IM Project.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Reservation</h2>
+      <div class="panel__body">
+        <p>Fall semester reservations will begin on Sep 30, and will end on Dec 11, 2026.</p>
+        <p>Students need to submit a <a href="https://drive.google.com/file/d/1tsbXO4TmZ5iNW03MqZljiU59TAElim7_/view?usp=sharing" target="_blank" rel="noopener">proposal form</a> at least one week in advance to Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>) that details how the studio will be used before access can be granted. All projects need to be approved prior to the reservation and cannot interfere with classes being held in the studio.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Studio AV</h2>
+      <div class="panel__body">
+        <p>If an event requires the use of the studio's built in audio and video equipment you will have to specify that in the reservation form. Under no circumstances can the C108 sound system or Panasonic projector be rewired or de-installed by a student or faculty.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Events</h2>
+      <div class="panel__body">
+        <p>If you are planning to host an event you will need to fill out the <a href="https://drive.google.com/file/d/1gXxxqRA0Su8sxpwe71qowjviSbHUKpjn/view" target="_blank" rel="noopener">Facilities Event Form</a> and send it to Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>). The approval of this form goes through several stages and takes about a week to process. Once approved it will be sent to your mailbox in the mail room.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Reception</h2>
+      <div class="panel__body">
+        <p>If you are planning to have a reception you also need to fill out the <a href="https://drive.google.com/file/d/1Ww4z1XWBXfvZWeo_2LrIqPUEKJlf1nOV/view" target="_blank" rel="noopener">Reception Form</a>. The section about alcohol is outdated. Please follow the <a href="https://drive.google.com/file/d/1CCgu7eSJLBPhsVlDGvyz8PkTItRW535M/view" target="_blank" rel="noopener">new guide</a> instead.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Regulations</h2>
+      <div class="panel__body">
+        <p>The use of the IM studio will need to conform with Facilities Management's fire and safety policies.</p>
+        <p>If the studio is being used in an unsafe manner (determined by Facilities Management and/or the Administration) or in a way not outlined in the submitted proposal, then we reserve the right to ask the student to remove the work from the studio or to alter it to accommodate the institute's safety policies.</p>
+        <p>The studio must be returned to its original condition after use. The student who reserves the studio is responsible for all the equipment in the studio and for whatever costs are incurred to return the studio to its original condition.</p>
+      </div>
+    </section>
+  </main>
+</div>

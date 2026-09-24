@@ -1,0 +1,287 @@
+<title>Equipment Checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void:#0a0a0a;
+    --paper:#ffffff;
+    --paper-dim:#f3f3f1;
+    --ink:#111110;
+    --ink-soft:#111110;
+    --hair:#111110;
+    --hair-on-dark:rgba(239,238,230,0.4);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:transparent;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+
+  /* ---------- FULL-PAGE BACKGROUND ---------- */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    background:#000;
+  }
+
+  .bg__img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:52% 40%;
+    filter:grayscale(1) contrast(1.08);
+    opacity:0.9;
+  }
+
+  .bg__scrim{
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 32%, rgba(0,0,0,0.72) 62%, rgba(10,10,10,0.9) 100%);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    flex:0 0 auto;
+    min-height:16px;
+    display:flex;
+    align-items:flex-end;
+  }
+
+  .hero__content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    padding:24px clamp(16px,5vw,40px) 20px;
+  }
+
+  .hero__eyebrow{
+    font-size:0.68rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--paper);
+    opacity:0.75;
+    margin:0 0 6px;
+  }
+
+  .hero__title{
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    color:var(--paper);
+    font-size:clamp(1.3rem,4.4vw,1.9rem);
+    line-height:1.15;
+    letter-spacing:0.01em;
+    margin:0;
+    text-wrap:balance;
+  }
+
+  /* ---------- LINK GRID (nav cells) ---------- */
+  .board{
+    position:relative;
+    flex:0 0 auto;
+    padding:2px clamp(14px,4vw,28px) 4px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .cell{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    background:transparent;
+    border-style:solid;
+    border-color:transparent;
+    border-width:36px 30px 40px 30px;
+    border-image-source:url('bubble.png');
+    border-image-slice:60 47 62 46 fill;
+    border-image-repeat:stretch;
+    border-radius:0;
+    padding:4px 16px 14px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    transition:filter 0.12s ease;
+  }
+
+  .cell:hover,
+  .cell:focus-visible{
+    outline:none;
+    filter:brightness(0.97);
+  }
+
+  .cell:active{
+    filter:brightness(0.93);
+  }
+
+  .cell__text{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    min-width:0;
+  }
+
+  .cell__title{
+    font-weight:700;
+    font-size:1.15rem;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cell__meta{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* ---------- CONTENT PANELS (policy text) ---------- */
+  .doc{
+    position:relative;
+    flex:1 1 auto;
+    padding:6px clamp(14px,4vw,28px) 40px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+
+  .panel + .panel{
+    margin-top:-26px;
+  }
+
+  .panel{
+    position:relative;
+    background:transparent;
+    border-style:solid;
+    border-color:transparent;
+    border-width:36px 30px 40px 30px;
+    border-image-source:url('bubble.png');
+    border-image-slice:60 47 62 46 fill;
+    border-image-repeat:stretch;
+    border-radius:0;
+    padding:4px 12px 10px;
+  }
+
+  .panel__title{
+    font-weight:700;
+    font-size:1.05rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin:0 0 10px;
+  }
+
+  .panel--headline{
+    margin-top:4px;
+  }
+
+  .panel__headline{
+    font-weight:700;
+    font-size:clamp(1.15rem,4vw,1.6rem);
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:1.2;
+    margin:0;
+    text-wrap:balance;
+  }
+
+  .panel__body{
+    font-size:0.95rem;
+    line-height:1.55;
+    color:var(--ink);
+    max-width:64ch;
+  }
+
+  .panel__body p{
+    margin:0 0 12px;
+  }
+
+  .panel__body p:last-child{
+    margin-bottom:0;
+  }
+
+  .panel__body a{
+    color:var(--ink);
+    text-decoration:underline;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cell{ transition:none; }
+  }
+</style>
+
+<div class="bg">
+  <img class="bg__img" src="bg.jpg" alt="">
+  <div class="bg__scrim"></div>
+</div>
+
+<div class="page">
+  <main class="doc">
+    <section class="panel panel--headline">
+      <h1 class="panel__headline">Equipment Checkout - 2026-2027</h1>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Contact</h2>
+      <div class="panel__body">
+        <p>Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>)</p>
+        <p>Yanqi He (<a href="mailto:yanqihe@students.calarts.edu">yanqihe@students.calarts.edu</a>)</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Orientation</h2>
+      <div class="panel__body">
+        <p>All students need to attend a studio orientation with Yanqi He (<a href="mailto:yanqihe@students.calarts.edu">yanqihe@students.calarts.edu</a>) or Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>) during their scheduled hours before being able to reserve the studios or check out equipment.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Equipment</h2>
+      <div class="panel__body">
+        <p>Fall reservations will begin on Oct 1, and all equipment needs to be returned by Dec 11, 2026. Reservations need to be submitted at least a week in advance of the booking.</p>
+        <p>We are currently reorganizing the inventory and restructuring the checkout process. Check back in here for the checkout form soon. Until then you can check out our <a href="https://docs.google.com/spreadsheets/d/1mpY1odF1ARvICOcTdZP4Bz27sUFvtCSr/edit?usp=sharing&ouid=103810134203641259782&rtpof=true&sd=true" target="_blank" rel="noopener">old and incomplete inventory list</a> and email Naomi Sam (<a href="mailto:im@calarts.edu">im@calarts.edu</a>) about checkout.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title">Regulations</h2>
+      <div class="panel__body">
+        <p>The student who checks out equipment is responsible for it and for whatever costs are incurred to replace or repair it.</p>
+      </div>
+    </section>
+  </main>
+</div>
