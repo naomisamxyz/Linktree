@@ -20,18 +20,16 @@
   html,body{
     margin:0;
     padding:0;
-    height:100%;
     background:transparent;
     color:var(--ink);
     font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
     -webkit-font-smoothing:antialiased;
-    overflow:hidden;
   }
 
   .page{
     max-width:760px;
-    height:100vh;
-    height:100dvh;
+    min-height:100vh;
+    min-height:100dvh;
     margin:0 auto;
     position:relative;
     z-index:1;
@@ -118,8 +116,6 @@
   /* ---------- LINK GRID ---------- */
   .board{
     position:relative;
-    flex:1 1 auto;
-    min-height:0;
     display:flex;
     flex-direction:column;
     gap:0;
@@ -146,16 +142,13 @@
   }
 
   .grid{
-    flex:1 1 0;
-    min-height:0;
     display:grid;
     grid-template-columns:1fr;
-    grid-template-rows:1fr;
     gap:0;
   }
 
   .grid + .grid{
-    margin-top:-26px;
+    margin-top:-28px;
   }
 
   .cell{
@@ -168,7 +161,7 @@
     background:transparent;
     border-style:solid;
     border-color:transparent;
-    border-width:36px 30px 40px 30px;
+    border-width:36px 14px 40px 14px;
     border-image-source:url('bubble.png');
     border-image-slice:60 47 62 46 fill;
     border-image-repeat:stretch;
@@ -222,26 +215,9 @@
     gap:0;
   }
 
-  .grid--pair .cell + .cell{
-    margin-left:-24px;
-  }
-
   .grid--pair .cell{
     flex:1 1 0;
     min-width:0;
-  }
-
-  @media (max-width:420px){
-    .grid--pair{
-      flex-direction:column;
-      flex-grow:2;
-      gap:0;
-    }
-
-    .grid--pair .cell + .cell{
-      margin-left:0;
-      margin-top:-24px;
-    }
   }
 
   /* ---------- FOOTER ---------- */
