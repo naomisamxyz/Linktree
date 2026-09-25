@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Schedule Fall 26</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void:#0a0a0a;
+    --paper:#ffffff;
+    --paper-dim:#f3f3f1;
+    --ink:#111110;
+    --ink-soft:#111110;
+    --hair:#111110;
+    --hair-on-dark:rgba(239,238,230,0.4);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:transparent;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:1100px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+
+  /* ---------- FULL-PAGE BACKGROUND ---------- */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    background:#000;
+  }
+
+  .bg__img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:52% 40%;
+    filter:grayscale(1) contrast(1.08);
+    opacity:0.9;
+  }
+
+  .bg__scrim{
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 32%, rgba(0,0,0,0.72) 62%, rgba(10,10,10,0.9) 100%);
+  }
+
+  /* ---------- LINK GRID (nav cells) ---------- */
+  .board{
+    position:relative;
+    flex:0 0 auto;
+    padding:16px clamp(14px,4vw,28px) 4px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    max-width:340px;
+  }
+
+  .cell{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    min-width:0;
+    background:transparent;
+    border-style:solid;
+    border-color:transparent;
+    border-width:36px 14px 40px 14px;
+    border-image-source:url('bubble.png');
+    border-image-slice:60 47 62 46 fill;
+    border-image-repeat:stretch;
+    border-radius:0;
+    padding:4px 16px 14px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    font-family:"Source Code Pro",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    transition:filter 0.12s ease;
+  }
+
+  .cell:hover,
+  .cell:focus-visible{
+    outline:none;
+    filter:brightness(0.97);
+  }
+
+  .cell:active{
+    filter:brightness(0.93);
+  }
+
+  .cell__text{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    min-width:0;
+  }
+
+  .cell__title{
+    font-weight:700;
+    font-size:1.15rem;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cell__meta{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* ---------- SCHEDULE IMAGE ---------- */
+  .doc{
+    position:relative;
+    flex:1 1 auto;
+    padding:20px clamp(14px,4vw,28px) 40px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .schedule-img{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  @media (max-width:480px){
+    .board, .doc{
+      padding-left:6px;
+      padding-right:6px;
+    }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="bg">
+  <img class="bg__img" src="bg.jpg" alt="">
+  <div class="bg__scrim"></div>
+</div>
+
+<div class="page">
+  <main class="doc">
+    <img class="schedule-img" src="schedule-image.png" alt="Fall 26 class schedule">
+  </main>
+</div>
+
+</body>
+</html>
